@@ -7,10 +7,18 @@ echo "      management script utilizing screen      "
 echo "  --> Authored by: RAk3rman 2020              "
 echo "=============================================="
 echo ""
-#Location of server files from project directory
-waterfall_directory="../Waterfall"
-survival_directory="../Survival"
-#Check the status of the waterfall server, return to console
+# Location of server files | ATTENTION: CHANGE THESE VALUES!
+waterfall_directory="/home/rak3rman/Waterfall"
+survival_directory="/home/rak3rman/Survival"
+if [ ! -d "$waterfall_directory" ]; then
+    echo "papermc-manager | ✘ The path '$waterfall_directory' does not exist on your filesystem. Please check the waterfall_directory value in manage.sh"
+    exit 0
+fi
+if [ ! -d "survival_directory" ]; then
+    echo "papermc-manager | ✘ The path '$survival_directory' does not exist on your filesystem. Please check the survival_directory value in manage.sh"
+    exit 0
+fi
+# Check the status of the waterfall server, return to console
 waterfall_status="false"
 if screen -list | grep -q "Waterfall"; then
     echo "papermc-manager | ✔ Waterfall is Online"
@@ -18,7 +26,7 @@ if screen -list | grep -q "Waterfall"; then
 else
     echo "papermc-manager | ✘ Waterfall is Offline"
 fi
-#Check the status of the survival server, return to console
+# Check the status of the survival server, return to console
 survival_status="false"
 if screen -list | grep -q "Survival"; then
     echo "papermc-manager | ✔ Survival is Online"
@@ -27,7 +35,7 @@ else
     echo "papermc-manager | ✘ Survival is Offline"
 fi
 echo ""
-#Check to see what flags were passed
+# Check to see what flags were passed
 passed_command=""
 while test $# -gt 0; do
   case "$1" in
@@ -50,7 +58,7 @@ while test $# -gt 0; do
       shift
       ;;
     -d|--delayed)
-      #Check to see if Survival is running
+      # Check to see if Survival is running
       if [ "$Survival_status" == "true" ]; then
         echo "papermc-manager | ✔ Waiting 60 seconds and displaying countdown title"
         echo "papermc-manager | Restarting Survival in 60 seconds"
@@ -83,7 +91,7 @@ while test $# -gt 0; do
       ;;
   esac
 done
-#If the stop or restart command is passed, make sure the servers are stopped
+# If the stop or restart command is passed, make sure the servers are stopped
 if [ "$passed_command" == "r" ] || [ "$passed_command" == "s" ]; then
   echo "papermc-manager | Stopping all servers if online..."
   if [ "$waterfall_status" == "true" ]; then
@@ -108,20 +116,18 @@ if [ "$passed_command" == "r" ] || [ "$passed_command" == "s" ]; then
   fi
   echo "papermc-manager | ✔ All servers stopped"
 fi
-#If the restart command is passed, restart the servers
+# If the restart command is passed, start the servers
 if [ "$passed_command" == "r" ]; then
   echo "papermc-manager | Starting all servers..."
   echo "papermc-manager | Starting Waterfall"
   cd $waterfall_directory || exit
   screen -S "Waterfall" -d -m
   screen -r "Waterfall" -X stuff $'java -Xms1G -Xmx1G -jar waterfall.jar\n'
-  cd || exit
   echo "papermc-manager | ✔ Waterfall Online"
   echo "papermc-manager | Starting Survival"
   cd $survival_directory || exit
   screen -S "Survival" -d -m
   screen -r "Survival" -X stuff $'java -Xms2G -Xmx2G -jar paper.jar\n'
-  cd || exit
   echo "papermc-manager | ✔ Survival Online"
   echo "papermc-manager | ✔ All servers online"
   echo ""
