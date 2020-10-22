@@ -61,7 +61,7 @@ while test $# -gt 0; do
       ;;
     -d|--delayed)
       # Check to see if Survival is running
-      if [ "$Survival_status" == "true" ]; then
+      if [ "$survival_status" == "true" ]; then
         echo "papermc-manager | ✔ Waiting 60 seconds and displaying countdown title"
         echo "papermc-manager | Restarting Survival in 60 seconds"
         screen -r "Survival" -X stuff $'title @a subtitle {"text":"in 60 seconds", "bold":true}\n'
@@ -86,6 +86,7 @@ while test $# -gt 0; do
       else
         echo "papermc-manager | ✘ Skipping delay because Survival is Offline"
       fi
+      echo ""
       shift
       ;;
     *)
@@ -117,6 +118,7 @@ if [ "$passed_command" == "r" ] || [ "$passed_command" == "s" ]; then
     echo "papermc-manager | ✘ Survival already stopped, skipping"
   fi
   echo "papermc-manager | ✔ All servers stopped"
+  echo ""
 fi
 # If the restart command is passed, start the servers
 if [ "$passed_command" == "r" ]; then
@@ -142,3 +144,4 @@ echo "-r, --restart    immediately start/restart all servers"
 echo "-s, --stop       immediately stop all servers"
 echo "-d, --delayed    wait 1 minute and display countdown title"
 echo "                 in-game, must be used with -r or -s flag"
+echo ""
