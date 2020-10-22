@@ -10,12 +10,12 @@ echo ""
 # Location of server files | ATTENTION: CHANGE THESE VALUES!
 waterfall_directory="/home/rak3rman/Waterfall"
 survival_directory="/home/rak3rman/Survival"
-if [ -d "$waterfall_directory" ]; then
+if [ ! -d "$waterfall_directory" ]; then
     echo "papermc-manager | ✘ The path '$waterfall_directory' does not exist on your filesystem. Please check the waterfall_directory value in manage.sh"
     echo ""
     exit 0
 fi
-if [ -d "survival_directory" ]; then
+if [ ! -d "$survival_directory" ]; then
     echo "papermc-manager | ✘ The path '$survival_directory' does not exist on your filesystem. Please check the survival_directory value in manage.sh"
     echo ""
     exit 0
