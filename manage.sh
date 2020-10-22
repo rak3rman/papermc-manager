@@ -63,28 +63,28 @@ while test $# -gt 0; do
       # Check to see if Survival is running
       if [ "$survival_status" == "true" ]; then
         echo "papermc-manager | ✔ Waiting 60 seconds and displaying countdown title"
-        echo "papermc-manager | Restarting Survival in 60 seconds"
+        echo "papermc-manager | Stopping Survival in 60 seconds"
         screen -r "Survival" -X stuff $'title @a subtitle {"text":"in 60 seconds", "bold":true}\n'
         screen -r "Survival" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
         sleep 30
-        echo "papermc-manager | Restarting Survival in 30 seconds"
+        echo "papermc-manager | Stopping Survival in 30 seconds"
         screen -r "Survival" -X stuff $'title @a subtitle {"text":"in 30 seconds", "bold":true}\n'
         screen -r "Survival" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
         sleep 15
-        echo "papermc-manager | Restarting Survival in 15 seconds"
+        echo "papermc-manager | Stopping Survival in 15 seconds"
         screen -r "Survival" -X stuff $'title @a subtitle {"text":"in 15 seconds", "bold":true}\n'
         screen -r "Survival" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
         sleep 5
-        echo "papermc-manager | Restarting Survival in 10 seconds"
+        echo "papermc-manager | Stopping Survival in 10 seconds"
         screen -r "Survival" -X stuff $'title @a subtitle {"text":"in 10 seconds", "bold":true}\n'
         screen -r "Survival" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
         sleep 5
-        echo "papermc-manager | Restarting Survival in 5 seconds"
+        echo "papermc-manager | Stopping Survival in 5 seconds"
         screen -r "Survival" -X stuff $'title @a subtitle {"text":"in 5 seconds", "bold":true}\n'
         screen -r "Survival" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
         sleep 5
       else
-        echo "papermc-manager | ✘ Skipping delay because Survival is Offline"
+        echo "papermc-manager | ✘ Skipping delay because Survival is offline"
       fi
       echo ""
       shift
@@ -94,8 +94,8 @@ while test $# -gt 0; do
       ;;
   esac
 done
-# If the stop or restart command is passed, make sure the servers are stopped
-if [ "$passed_command" == "r" ] || [ "$passed_command" == "s" ]; then
+# If the stop command is passed, make sure the servers are stopped
+if [ "$passed_command" == "s" ]; then
   echo "papermc-manager | Stopping all servers if online..."
   if [ "$waterfall_status" == "true" ]; then
     echo "papermc-manager | Stopping Waterfall"
@@ -119,9 +119,33 @@ if [ "$passed_command" == "r" ] || [ "$passed_command" == "s" ]; then
   fi
   echo "papermc-manager | ✔ All servers stopped"
   echo ""
+  exit 0
 fi
 # If the restart command is passed, start the servers
 if [ "$passed_command" == "r" ]; then
+  echo "papermc-manager | Stopping all servers if online..."
+  if [ "$waterfall_status" == "true" ]; then
+    echo "papermc-manager | Stopping Waterfall"
+    screen -r "Waterfall" -X stuff $'end\n'
+    sleep 5
+    screen -r "Waterfall" -X stuff $'exit\n'
+    echo "papermc-manager | ✔ Stopped Waterfall peacefully"
+    sleep 1
+  else
+    echo "papermc-manager | ✘ Waterfall already stopped, skipping"
+  fi
+  if [ "$survival_status" == "true" ]; then
+    echo "papermc-manager | Stopping Survival"
+    screen -r "Survival" -X stuff $'stop\n'
+    sleep 5
+    screen -r "Survival" -X stuff $'exit\n'
+    echo "papermc-manager | ✔ Stopped Survival peacefully"
+    sleep 1
+  else
+    echo "papermc-manager | ✘ Survival already stopped, skipping"
+  fi
+  echo "papermc-manager | ✔ All servers stopped"
+  echo ""
   echo "papermc-manager | Starting all servers..."
   echo "papermc-manager | Starting Waterfall"
   cd $waterfall_directory || exit
