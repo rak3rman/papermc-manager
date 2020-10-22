@@ -1,149 +1,136 @@
 #!/bin/bash
 echo ""
-echo "==========================================="
-echo "==|| RAk3rman Minecraft Status Manager ||=="
-echo "==========================================="
+echo "=============================================="
+echo "  papermc-manager | version 1.1               "
+echo "  --> Description: A simple minecraft server  "
+echo "      management script utilizing screen      "
+echo "  --> Authored by: RAk3rman 2020              "
+echo "=============================================="
 echo ""
-#Check to see if servers are running
-Waterfall_status="false"
-Survival_status="false"
+#Location of server files from project directory
+waterfall_directory="../Waterfall"
+survival_directory="../Survival"
+#Check the status of the waterfall server, return to console
+waterfall_status="false"
 if screen -list | grep -q "Waterfall"; then
-    echo "RMSM | ✔ Waterfall is Online"
-    Waterfall_status="true"
+    echo "papermc-manager | ✔ Waterfall is Online"
+    waterfall_status="true"
 else
-    echo "RMSM | ✘ Waterfall is Offline"
+    echo "papermc-manager | ✘ Waterfall is Offline"
 fi
+#Check the status of the survival server, return to console
+survival_status="false"
 if screen -list | grep -q "Survival"; then
-    echo "RMSM | ✔ Survival is Online"
-    Survival_status="true"
+    echo "papermc-manager | ✔ Survival is Online"
+    survival_status="true"
 else
-    echo "RMSM | ✘ Survival is Offline"
+    echo "papermc-manager | ✘ Survival is Offline"
 fi
 echo ""
-echo "RMSM | What would you like to do?"
-echo "   1) Start/restart all servers"
-echo "   2) Halt all servers"
-echo "   3) 1 min safe restart"
-echo "   4) Exit"
-echo ""
-until [[ "$MENU_OPTION" =~ ^[1-4]$ ]]; do
-    read -rp "Select an option [1-4]: " MENU_OPTION
+#Check to see what flags were passed
+passed_command=""
+while test $# -gt 0; do
+  case "$1" in
+    -h|--help)
+      echo "papermc-manager | Flag options:"
+      echo "-h, --help       show help message"
+      echo "-r, --restart    immediately start/restart all servers"
+      echo "-s, --stop       immediately stop all servers"
+      echo "-d, --delayed    wait 1 minute and display countdown title"
+      echo "                 in-game, must be used with -r or -s flag"
+      echo ""
+      exit 0
+      ;;
+    -r|--restart)
+      passed_command="r"
+      shift
+      ;;
+    -s|--stop)
+      passed_command="s"
+      shift
+      ;;
+    -d|--delayed)
+      #Check to see if Survival is running
+      if [ "$Survival_status" == "true" ]; then
+        echo "papermc-manager | ✔ Waiting 60 seconds and displaying countdown title"
+        echo "papermc-manager | Restarting Survival in 60 seconds"
+        screen -r "Survival" -X stuff $'title @a subtitle {"text":"in 60 seconds", "bold":true}\n'
+        screen -r "Survival" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
+        sleep 30
+        echo "papermc-manager | Restarting Survival in 30 seconds"
+        screen -r "Survival" -X stuff $'title @a subtitle {"text":"in 30 seconds", "bold":true}\n'
+        screen -r "Survival" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
+        sleep 15
+        echo "papermc-manager | Restarting Survival in 15 seconds"
+        screen -r "Survival" -X stuff $'title @a subtitle {"text":"in 15 seconds", "bold":true}\n'
+        screen -r "Survival" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
+        sleep 5
+        echo "papermc-manager | Restarting Survival in 10 seconds"
+        screen -r "Survival" -X stuff $'title @a subtitle {"text":"in 10 seconds", "bold":true}\n'
+        screen -r "Survival" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
+        sleep 5
+        echo "papermc-manager | Restarting Survival in 5 seconds"
+        screen -r "Survival" -X stuff $'title @a subtitle {"text":"in 5 seconds", "bold":true}\n'
+        screen -r "Survival" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
+        sleep 5
+      else
+        echo "papermc-manager | ✘ Skipping delay because Survival is Offline"
+      fi
+      shift
+      ;;
+    *)
+      break
+      ;;
+  esac
 done
-case $MENU_OPTION in
-		    1)
-		    	echo ""
-          if [ "$Waterfall_status" == "true" ]; then
-            echo "RMSM | Halting Waterfall"
-            screen -r "Waterfall" -X stuff $'end\n'
-            sleep 5
-            screen -r "Waterfall" -X stuff $'exit\n'
-            echo "RMSM | Halted Waterfall peacefully"
-            sleep 1
-          fi
-          if [ "$Survival_status" == "true" ]; then
-            echo "RMSM | Halting Survival"
-            screen -r "Survival" -X stuff $'stop\n'
-            sleep 5
-            screen -r "Survival" -X stuff $'exit\n'
-            echo "RMSM | Halted Survival peacefully"
-            sleep 1
-          fi
-          echo "RMSM | Starting all servers..."
-          echo "RMSM | Starting Waterfall"
-          cd Waterfall
-          screen -S "Waterfall" -d -m
-          screen -r "Waterfall" -X stuff $'java -Xms1G -Xmx1G -jar waterfall.jar\n'
-          cd
-          echo "RMSM | Waterfall Online"
-          echo "RMSM | Starting Survival"
-          cd 16-Survival
-          screen -S "Survival" -d -m
-          screen -r "Survival" -X stuff $'java -Xms2G -Xmx2G -jar paper.jar\n'
-          cd
-          echo "RMSM | Survival Online"
-          echo ""
-          exit 0
-		    ;;
-		    2)
-			    echo ""
-          echo "RMSM | Halting all servers..."
-          if [ "$Waterfall_status" == "true" ]; then
-            echo "RMSM | Halting Waterfall"
-            screen -r "Waterfall" -X stuff $'end\n'
-            sleep 5
-            screen -r "Waterfall" -X stuff $'exit\n'
-            echo "RMSM | Halted Waterfall peacefully"
-            sleep 1
-          fi
-          if [ "$Survival_status" == "true" ]; then
-            echo "RMSM | Halting Survival"
-            screen -r "Survival" -X stuff $'stop\n'
-            sleep 5
-            screen -r "Survival" -X stuff $'exit\n'
-            echo "RMSM | Halted Survival peacefully"
-            sleep 1
-          fi
-          echo ""
-          exit 0
-		    ;;
-		    3)
-			    echo ""
-			    echo "RMSM | Server Restarting in 60 seconds"
-			    screen -r "Survival" -X stuff $'title @a subtitle {"text":"in 60 seconds", "bold":true}\n'
-			    screen -r "Survival" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
-			    sleep 30
-			    echo "RMSM | Server Restarting in 30 seconds"
-			    screen -r "Survival" -X stuff $'title @a subtitle {"text":"in 30 seconds", "bold":true}\n'
-			    screen -r "Survival" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
-			    sleep 15
-			    echo "RMSM | Server Restarting in 15 seconds"
-			    screen -r "Survival" -X stuff $'title @a subtitle {"text":"in 15 seconds", "bold":true}\n'
-			    screen -r "Survival" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
-			    sleep 5
-			    echo "RMSM | Server Restarting in 10 seconds"
-			    screen -r "Survival" -X stuff $'title @a subtitle {"text":"in 10 seconds", "bold":true}\n'
-			    screen -r "Survival" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
-			    sleep 5
-			    echo "RMSM | Server Restarting in 5 seconds"
-			    screen -r "Survival" -X stuff $'title @a subtitle {"text":"in 5 seconds", "bold":true}\n'
-			    screen -r "Survival" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
-			    sleep 5
-          if [ "$Waterfall_status" == "true" ]; then
-            echo "RMSM | Halting Waterfall"
-            screen -r "Waterfall" -X stuff $'end\n'
-            sleep 5
-            screen -r "Waterfall" -X stuff $'exit\n'
-            echo "RMSM | Halted Waterfall peacefully"
-            sleep 1
-          fi
-          if [ "$Survival_status" == "true" ]; then
-            echo "RMSM | Halting Survival"
-            screen -r "Survival" -X stuff $'stop\n'
-            sleep 5
-            screen -r "Survival" -X stuff $'exit\n'
-            echo "RMSM | Halted Survival peacefully"
-            sleep 1
-          fi
-          echo "RMSM | Starting all servers..."
-          echo "RMSM | Starting Waterfall"
-          cd Waterfall
-          screen -S "Waterfall" -d -m
-          screen -r "Waterfall" -X stuff $'java -Xms1G -Xmx1G -jar waterfall.jar\n'
-          cd
-          echo "RMSM | Waterfall Online"
-          echo "RMSM | Starting Survival"
-          cd 16-Survival
-          screen -S "Survival" -d -m
-          screen -r "Survival" -X stuff $'java -Xms2G -Xmx2G -jar paper.jar\n'
-          cd
-          echo "RMSM | Survival Online"
-          echo ""
-          exit 0
-		    ;;
-		    4)
-			    echo ""
-          echo "Exiting manager..."
-          echo ""
-          exit 0
-		    ;;
-esac
+#If the stop or restart command is passed, make sure the servers are stopped
+if [ "$passed_command" == "r" ] || [ "$passed_command" == "s" ]; then
+  echo "papermc-manager | Stopping all servers if online..."
+  if [ "$waterfall_status" == "true" ]; then
+    echo "papermc-manager | Stopping Waterfall"
+    screen -r "Waterfall" -X stuff $'end\n'
+    sleep 5
+    screen -r "Waterfall" -X stuff $'exit\n'
+    echo "papermc-manager | ✔ Stopped Waterfall peacefully"
+    sleep 1
+  else
+    echo "papermc-manager | ✘ Waterfall already stopped, skipping"
+  fi
+  if [ "$survival_status" == "true" ]; then
+    echo "papermc-manager | Stopping Survival"
+    screen -r "Survival" -X stuff $'stop\n'
+    sleep 5
+    screen -r "Survival" -X stuff $'exit\n'
+    echo "papermc-manager | ✔ Stopped Survival peacefully"
+    sleep 1
+  else
+    echo "papermc-manager | ✘ Survival already stopped, skipping"
+  fi
+  echo "papermc-manager | ✔ All servers stopped"
+fi
+#If the restart command is passed, restart the servers
+if [ "$passed_command" == "r" ]; then
+  echo "papermc-manager | Starting all servers..."
+  echo "papermc-manager | Starting Waterfall"
+  cd $waterfall_directory || exit
+  screen -S "Waterfall" -d -m
+  screen -r "Waterfall" -X stuff $'java -Xms1G -Xmx1G -jar waterfall.jar\n'
+  cd || exit
+  echo "papermc-manager | ✔ Waterfall Online"
+  echo "papermc-manager | Starting Survival"
+  cd $survival_directory || exit
+  screen -S "Survival" -d -m
+  screen -r "Survival" -X stuff $'java -Xms2G -Xmx2G -jar paper.jar\n'
+  cd || exit
+  echo "papermc-manager | ✔ Survival Online"
+  echo "papermc-manager | ✔ All servers online"
+  echo ""
+  echo "papermc-manager | Use 'screen -r Waterfall' or 'screen -r Survival' to attach to the designated screen."
+  exit 0
+fi
+echo "papermc-manager | Flag options:"
+echo "-h, --help       show help message"
+echo "-r, --restart    immediately start/restart all servers"
+echo "-s, --stop       immediately stop all servers"
+echo "-d, --delayed    wait 1 minute and display countdown title"
+echo "                 in-game, must be used with -r or -s flag"
