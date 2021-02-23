@@ -10,6 +10,7 @@ echo ""
 # Location of server files | ATTENTION: CHANGE THESE VALUES!
 waterfall_directory="/home/rak3rman/Waterfall"
 survival_directory="/home/rak3rman/Survival"
+minigame_directory="/home/rak3rman/Minigame"
 if [ ! -d "$waterfall_directory" ]; then
     echo "papermc-manager | ✘ The path '$waterfall_directory' does not exist on your filesystem. Please check the waterfall_directory value in manage.sh"
     echo ""
@@ -17,6 +18,11 @@ if [ ! -d "$waterfall_directory" ]; then
 fi
 if [ ! -d "$survival_directory" ]; then
     echo "papermc-manager | ✘ The path '$survival_directory' does not exist on your filesystem. Please check the survival_directory value in manage.sh"
+    echo ""
+    exit 0
+fi
+if [ ! -d "$minigame_directory" ]; then
+    echo "papermc-manager | ✘ The path '$minigame_directory' does not exist on your filesystem. Please check the minigame_directory value in manage.sh"
     echo ""
     exit 0
 fi
@@ -35,6 +41,14 @@ if screen -list | grep -q "Survival"; then
     survival_status="true"
 else
     echo "papermc-manager | ✘ Survival is Offline"
+fi
+# Check the status of the minigame server, return to console
+minigame_status="false"
+if screen -list | grep -q "Minigame"; then
+    echo "papermc-manager | ✔ Minigame is Online"
+    minigame_status="true"
+else
+    echo "papermc-manager | ✘ Minigame is Offline"
 fi
 echo ""
 # Check to see what flags were passed
@@ -86,6 +100,31 @@ while test $# -gt 0; do
       else
         echo "papermc-manager | ✘ Skipping delay because Survival is offline"
       fi
+      if [ "$minigame_status" == "true" ]; then
+        echo "papermc-manager | ✔ Waiting 60 seconds and displaying countdown title"
+        echo "papermc-manager | Stopping Minigame in 60 seconds"
+        screen -r "Minigame" -X stuff $'title @a subtitle {"text":"in 60 seconds", "bold":true}\n'
+        screen -r "Minigame" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
+        sleep 30
+        echo "papermc-manager | Stopping Minigame in 30 seconds"
+        screen -r "Minigame" -X stuff $'title @a subtitle {"text":"in 30 seconds", "bold":true}\n'
+        screen -r "Minigame" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
+        sleep 15
+        echo "papermc-manager | Stopping Minigame in 15 seconds"
+        screen -r "Minigame" -X stuff $'title @a subtitle {"text":"in 15 seconds", "bold":true}\n'
+        screen -r "Minigame" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
+        sleep 5
+        echo "papermc-manager | Stopping Minigame in 10 seconds"
+        screen -r "Minigame" -X stuff $'title @a subtitle {"text":"in 10 seconds", "bold":true}\n'
+        screen -r "Minigame" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
+        sleep 5
+        echo "papermc-manager | Stopping Minigame in 5 seconds"
+        screen -r "Minigame" -X stuff $'title @a subtitle {"text":"in 5 seconds", "bold":true}\n'
+        screen -r "Minigame" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
+        sleep 5
+      else
+        echo "papermc-manager | ✘ Skipping delay because Minigame is offline"
+      fi
       echo ""
       shift
       ;;
@@ -117,6 +156,16 @@ if [ "$passed_command" == "s" ]; then
   else
     echo "papermc-manager | ✘ Survival already stopped, skipping"
   fi
+  if [ "$minigame_status" == "true" ]; then
+    echo "papermc-manager | Stopping Minigame"
+    screen -r "Minigame" -X stuff $'stop\n'
+    sleep 5
+    screen -r "Minigame" -X stuff $'exit\n'
+    echo "papermc-manager | ✔ Stopped Minigame peacefully"
+    sleep 1
+  else
+    echo "papermc-manager | ✘ Minigame already stopped, skipping"
+  fi
   echo "papermc-manager | ✔ All servers stopped"
   echo ""
   exit 0
@@ -144,6 +193,16 @@ if [ "$passed_command" == "r" ]; then
   else
     echo "papermc-manager | ✘ Survival already stopped, skipping"
   fi
+  if [ "$minigame_status" == "true" ]; then
+    echo "papermc-manager | Stopping Minigame"
+    screen -r "Minigame" -X stuff $'stop\n'
+    sleep 5
+    screen -r "Minigame" -X stuff $'exit\n'
+    echo "papermc-manager | ✔ Stopped Minigame peacefully"
+    sleep 1
+  else
+    echo "papermc-manager | ✘ Minigame already stopped, skipping"
+  fi
   echo "papermc-manager | ✔ All servers stopped"
   echo ""
   echo "papermc-manager | Starting all servers..."
@@ -157,9 +216,14 @@ if [ "$passed_command" == "r" ]; then
   screen -S "Survival" -d -m
   screen -r "Survival" -X stuff $'java -Xms2G -Xmx2G -jar paper.jar\n'
   echo "papermc-manager | ✔ Survival Online"
+  echo "papermc-manager | Starting Minigame"
+  cd $minigame_directory || exit
+  screen -S "Minigame" -d -m
+  screen -r "Minigame" -X stuff $'java -Xms2G -Xmx2G -jar paper.jar\n'
+  echo "papermc-manager | ✔ Minigame Online"
   echo "papermc-manager | ✔ All servers online"
   echo ""
-  echo "papermc-manager | Use 'screen -r Waterfall' or 'screen -r Survival' to attach to the designated screen."
+  echo "papermc-manager | Use 'screen -r <name>' to attach to the designated screen."
   exit 0
 fi
 echo "papermc-manager | Flag options:"
