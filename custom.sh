@@ -88,57 +88,92 @@ while test $# -gt 0; do
       shift
       ;;
     -d|--delayed)
-      # Check to see if Trackers Survival is running
-      if [ "$survival1_status" == "true" ]; then
+      # Check to see if both worlds are running
+      if [ "$survival1_status" == "true" ] && [ "$survival2_status" == "true" ]; then
         echo "papermc-manager | ✔ Waiting 60 seconds and displaying countdown title"
-        echo "papermc-manager | Stopping Trackers Survival in 60 seconds"
+        echo "papermc-manager | Stopping Survival Worlds in 60 seconds"
         screen -r "Trackers_Survival" -X stuff $'title @a subtitle {"text":"in 60 seconds", "bold":true}\n'
         screen -r "Trackers_Survival" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
-        sleep 30
-        echo "papermc-manager | Stopping Trackers Survival in 30 seconds"
-        screen -r "Trackers_Survival" -X stuff $'title @a subtitle {"text":"in 30 seconds", "bold":true}\n'
-        screen -r "Trackers_Survival" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
-        sleep 15
-        echo "papermc-manager | Stopping Trackers Survival in 15 seconds"
-        screen -r "Trackers_Survival" -X stuff $'title @a subtitle {"text":"in 15 seconds", "bold":true}\n'
-        screen -r "Trackers_Survival" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
-        sleep 5
-        echo "papermc-manager | Stopping Trackers Survival in 10 seconds"
-        screen -r "Trackers_Survival" -X stuff $'title @a subtitle {"text":"in 10 seconds", "bold":true}\n'
-        screen -r "Trackers_Survival" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
-        sleep 5
-        echo "papermc-manager | Stopping Trackers Survival in 5 seconds"
-        screen -r "Trackers_Survival" -X stuff $'title @a subtitle {"text":"in 5 seconds", "bold":true}\n'
-        screen -r "Trackers_Survival" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
-        sleep 5
-      else
-        echo "papermc-manager | ✘ Skipping delay because Trackers Survival is offline"
-      fi
-      # Check to see if Trackers Survival is running
-      if [ "$survival2_status" == "true" ]; then
-        echo "papermc-manager | ✔ Waiting 60 seconds and displaying countdown title"
-        echo "papermc-manager | Stopping Mine9 Survival in 60 seconds"
         screen -r "Mine9_Survival" -X stuff $'title @a subtitle {"text":"in 60 seconds", "bold":true}\n'
         screen -r "Mine9_Survival" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
         sleep 30
-        echo "papermc-manager | Stopping Mine9 Survival in 30 seconds"
+        echo "papermc-manager | Stopping Survival Worlds in 30 seconds"
+        screen -r "Trackers_Survival" -X stuff $'title @a subtitle {"text":"in 30 seconds", "bold":true}\n'
+        screen -r "Trackers_Survival" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
         screen -r "Mine9_Survival" -X stuff $'title @a subtitle {"text":"in 30 seconds", "bold":true}\n'
         screen -r "Mine9_Survival" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
         sleep 15
-        echo "papermc-manager | Stopping Mine9 Survival in 15 seconds"
+        echo "papermc-manager | Stopping Survival Worlds in 15 seconds"
+        screen -r "Trackers_Survival" -X stuff $'title @a subtitle {"text":"in 15 seconds", "bold":true}\n'
+        screen -r "Trackers_Survival" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
         screen -r "Mine9_Survival" -X stuff $'title @a subtitle {"text":"in 15 seconds", "bold":true}\n'
         screen -r "Mine9_Survival" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
         sleep 5
-        echo "papermc-manager | Stopping Mine9 Survival in 10 seconds"
+        echo "papermc-manager | Stopping Survival Worlds in 10 seconds"
+        screen -r "Trackers_Survival" -X stuff $'title @a subtitle {"text":"in 10 seconds", "bold":true}\n'
+        screen -r "Trackers_Survival" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
         screen -r "Mine9_Survival" -X stuff $'title @a subtitle {"text":"in 10 seconds", "bold":true}\n'
         screen -r "Mine9_Survival" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
         sleep 5
-        echo "papermc-manager | Stopping Mine9 Survival in 5 seconds"
+        echo "papermc-manager | Stopping Survival Worlds in 5 seconds"
+        screen -r "Trackers_Survival" -X stuff $'title @a subtitle {"text":"in 5 seconds", "bold":true}\n'
+        screen -r "Trackers_Survival" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
         screen -r "Mine9_Survival" -X stuff $'title @a subtitle {"text":"in 5 seconds", "bold":true}\n'
         screen -r "Mine9_Survival" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
         sleep 5
       else
-        echo "papermc-manager | ✘ Skipping delay because Trackers Survival is offline"
+        # Check to see if Trackers Survival is running
+        if [ "$survival1_status" == "true" ]; then
+          echo "papermc-manager | ✔ Waiting 60 seconds and displaying countdown title"
+          echo "papermc-manager | Stopping Trackers Survival in 60 seconds"
+          screen -r "Trackers_Survival" -X stuff $'title @a subtitle {"text":"in 60 seconds", "bold":true}\n'
+          screen -r "Trackers_Survival" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
+          sleep 30
+          echo "papermc-manager | Stopping Trackers Survival in 30 seconds"
+          screen -r "Trackers_Survival" -X stuff $'title @a subtitle {"text":"in 30 seconds", "bold":true}\n'
+          screen -r "Trackers_Survival" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
+          sleep 15
+          echo "papermc-manager | Stopping Trackers Survival in 15 seconds"
+          screen -r "Trackers_Survival" -X stuff $'title @a subtitle {"text":"in 15 seconds", "bold":true}\n'
+          screen -r "Trackers_Survival" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
+          sleep 5
+          echo "papermc-manager | Stopping Trackers Survival in 10 seconds"
+          screen -r "Trackers_Survival" -X stuff $'title @a subtitle {"text":"in 10 seconds", "bold":true}\n'
+          screen -r "Trackers_Survival" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
+          sleep 5
+          echo "papermc-manager | Stopping Trackers Survival in 5 seconds"
+          screen -r "Trackers_Survival" -X stuff $'title @a subtitle {"text":"in 5 seconds", "bold":true}\n'
+          screen -r "Trackers_Survival" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
+          sleep 5
+        else
+          echo "papermc-manager | ✘ Skipping delay because Trackers Survival is offline"
+        fi
+        # Check to see if Mine9 Survival is running
+        if [ "$survival2_status" == "true" ]; then
+          echo "papermc-manager | ✔ Waiting 60 seconds and displaying countdown title"
+          echo "papermc-manager | Stopping Mine9 Survival in 60 seconds"
+          screen -r "Mine9_Survival" -X stuff $'title @a subtitle {"text":"in 60 seconds", "bold":true}\n'
+          screen -r "Mine9_Survival" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
+          sleep 30
+          echo "papermc-manager | Stopping Mine9 Survival in 30 seconds"
+          screen -r "Mine9_Survival" -X stuff $'title @a subtitle {"text":"in 30 seconds", "bold":true}\n'
+          screen -r "Mine9_Survival" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
+          sleep 15
+          echo "papermc-manager | Stopping Mine9 Survival in 15 seconds"
+          screen -r "Mine9_Survival" -X stuff $'title @a subtitle {"text":"in 15 seconds", "bold":true}\n'
+          screen -r "Mine9_Survival" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
+          sleep 5
+          echo "papermc-manager | Stopping Mine9 Survival in 10 seconds"
+          screen -r "Mine9_Survival" -X stuff $'title @a subtitle {"text":"in 10 seconds", "bold":true}\n'
+          screen -r "Mine9_Survival" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
+          sleep 5
+          echo "papermc-manager | Stopping Mine9 Survival in 5 seconds"
+          screen -r "Mine9_Survival" -X stuff $'title @a subtitle {"text":"in 5 seconds", "bold":true}\n'
+          screen -r "Mine9_Survival" -X stuff $'title @a title {"text":"Server Restarting", "bold":true, "color":"red"}\n'
+          sleep 5
+        else
+          echo "papermc-manager | ✘ Skipping delay because Trackers Survival is offline"
+        fi
       fi
       echo ""
       shift
@@ -157,19 +192,8 @@ if [ "$passed_command" == "s" ]; then
     sleep 5
     screen -r "Trackers_Waterfall" -X stuff $'exit\n'
     echo "papermc-manager | ✔ Stopped Trackers Waterfall peacefully"
-    sleep 1
   else
     echo "papermc-manager | ✘ Trackers Waterfall already stopped, skipping"
-  fi
-  if [ "$survival1_status" == "true" ]; then
-    echo "papermc-manager | Stopping Trackers Survival"
-    screen -r "Trackers_Survival" -X stuff $'stop\n'
-    sleep 5
-    screen -r "Trackers_Survival" -X stuff $'exit\n'
-    echo "papermc-manager | ✔ Stopped Trackers Survival peacefully"
-    sleep 1
-  else
-    echo "papermc-manager | ✘ Trackers Survival already stopped, skipping"
   fi
   if [ "$waterfall2_status" == "true" ]; then
     echo "papermc-manager | Stopping Mine9 Waterfall"
@@ -177,9 +201,17 @@ if [ "$passed_command" == "s" ]; then
     sleep 5
     screen -r "Mine9_Waterfall" -X stuff $'exit\n'
     echo "papermc-manager | ✔ Stopped Mine9 Waterfall peacefully"
-    sleep 1
   else
     echo "papermc-manager | ✘ Mine9 Waterfall already stopped, skipping"
+  fi
+  if [ "$survival1_status" == "true" ]; then
+    echo "papermc-manager | Stopping Trackers Survival"
+    screen -r "Trackers_Survival" -X stuff $'stop\n'
+    sleep 5
+    screen -r "Trackers_Survival" -X stuff $'exit\n'
+    echo "papermc-manager | ✔ Stopped Trackers Survival peacefully"
+  else
+    echo "papermc-manager | ✘ Trackers Survival already stopped, skipping"
   fi
   if [ "$survival2_status" == "true" ]; then
     echo "papermc-manager | Stopping Mine9 Survival"
@@ -187,7 +219,6 @@ if [ "$passed_command" == "s" ]; then
     sleep 5
     screen -r "Mine9_Survival" -X stuff $'exit\n'
     echo "papermc-manager | ✔ Stopped Mine9 Survival peacefully"
-    sleep 1
   else
     echo "papermc-manager | ✘ Mine9 Survival already stopped, skipping"
   fi
@@ -204,19 +235,8 @@ if [ "$passed_command" == "r" ]; then
     sleep 5
     screen -r "Trackers_Waterfall" -X stuff $'exit\n'
     echo "papermc-manager | ✔ Stopped Trackers Waterfall peacefully"
-    sleep 1
   else
     echo "papermc-manager | ✘ Trackers Waterfall already stopped, skipping"
-  fi
-  if [ "$survival1_status" == "true" ]; then
-    echo "papermc-manager | Stopping Trackers Survival"
-    screen -r "Trackers_Survival" -X stuff $'stop\n'
-    sleep 5
-    screen -r "Trackers_Survival" -X stuff $'exit\n'
-    echo "papermc-manager | ✔ Stopped Trackers Survival peacefully"
-    sleep 1
-  else
-    echo "papermc-manager | ✘ Trackers Survival already stopped, skipping"
   fi
   if [ "$waterfall2_status" == "true" ]; then
     echo "papermc-manager | Stopping Mine9 Waterfall"
@@ -224,9 +244,17 @@ if [ "$passed_command" == "r" ]; then
     sleep 5
     screen -r "Mine9_Waterfall" -X stuff $'exit\n'
     echo "papermc-manager | ✔ Stopped Mine9 Waterfall peacefully"
-    sleep 1
   else
     echo "papermc-manager | ✘ Mine9 Waterfall already stopped, skipping"
+  fi
+  if [ "$survival1_status" == "true" ]; then
+    echo "papermc-manager | Stopping Trackers Survival"
+    screen -r "Trackers_Survival" -X stuff $'stop\n'
+    sleep 5
+    screen -r "Trackers_Survival" -X stuff $'exit\n'
+    echo "papermc-manager | ✔ Stopped Trackers Survival peacefully"
+  else
+    echo "papermc-manager | ✘ Trackers Survival already stopped, skipping"
   fi
   if [ "$survival2_status" == "true" ]; then
     echo "papermc-manager | Stopping Mine9 Survival"
@@ -234,33 +262,35 @@ if [ "$passed_command" == "r" ]; then
     sleep 5
     screen -r "Mine9_Survival" -X stuff $'exit\n'
     echo "papermc-manager | ✔ Stopped Mine9 Survival peacefully"
-    sleep 1
   else
     echo "papermc-manager | ✘ Mine9 Survival already stopped, skipping"
   fi
   echo "papermc-manager | ✔ All servers stopped"
   echo ""
-  echo "papermc-manager | Starting all servers..."
-  echo "papermc-manager | Starting Trackers Waterfall"
-  cd $waterfall1_directory || exit
-  screen -S "Trackers_Waterfall" -d -m
-  screen -r "Trackers_Waterfall" -X stuff $'java -Xms1G -Xmx1G -jar waterfall.jar\n'
-  echo "papermc-manager | ✔ Trackers Waterfall Online"
+  echo "papermc-manager | Starting survival servers..."
   echo "papermc-manager | Starting Trackers Survival"
   cd $survival1_directory || exit
   screen -S "Trackers_Survival" -d -m
   screen -r "Trackers_Survival" -X stuff $'java -Xms2G -Xmx2G -jar paper.jar\n'
   echo "papermc-manager | ✔ Trackers Survival Online"
-  echo "papermc-manager | Starting Mine9 Waterfall"
-  cd $waterfall2_directory || exit
-  screen -S "Mine9_Waterfall" -d -m
-  screen -r "Mine9_Waterfall" -X stuff $'java -Xms1G -Xmx1G -jar waterfall.jar\n'
-  echo "papermc-manager | ✔ Mine9 Waterfall Online"
   echo "papermc-manager | Starting Mine9 Survival"
   cd $survival2_directory || exit
   screen -S "Mine9_Survival" -d -m
   screen -r "Mine9_Survival" -X stuff $'java -Xms2G -Xmx2G -jar paper.jar\n'
   echo "papermc-manager | ✔ Mine9 Survival Online"
+  echo "papermc-manager | Waiting for survival servers to start..."
+  sleep 10
+  echo "papermc-manager | Starting waterfall servers..."
+  echo "papermc-manager | Starting Trackers Waterfall"
+  cd $waterfall1_directory || exit
+  screen -S "Trackers_Waterfall" -d -m
+  screen -r "Trackers_Waterfall" -X stuff $'java -Xms1G -Xmx1G -jar waterfall.jar\n'
+  echo "papermc-manager | ✔ Trackers Waterfall Online"
+  echo "papermc-manager | Starting Mine9 Waterfall"
+  cd $waterfall2_directory || exit
+  screen -S "Mine9_Waterfall" -d -m
+  screen -r "Mine9_Waterfall" -X stuff $'java -Xms1G -Xmx1G -jar waterfall.jar\n'
+  echo "papermc-manager | ✔ Mine9 Waterfall Online"
   echo "papermc-manager | ✔ All servers online"
   echo ""
   echo "papermc-manager | Use 'screen -r <name>' to attach to the designated screen."
