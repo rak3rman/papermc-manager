@@ -271,7 +271,7 @@ if [ "$passed_command" == "r" ]; then
   echo "papermc-manager | Starting Trackers Survival"
   cd $survival1_directory || exit
   screen -S "Trackers_Survival" -d -m
-  screen -r "Trackers_Survival" -X stuff $'java -Xms2G -Xmx2G -jar paper.jar\n'
+  screen -r "Trackers_Survival" -X stuff $'java -Xms3G -Xmx3G -jar paper.jar\n'
   echo "papermc-manager | ✔ Trackers Survival Online"
   echo "papermc-manager | Starting Mine9 Survival"
   cd $survival2_directory || exit
